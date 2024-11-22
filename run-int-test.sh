@@ -15,7 +15,10 @@
 #----------------------------------------------------------------------------
 #!/bin/bash
 
-set -o xtrace
+set -o xtrace; set -e
+
+TESTGRID_DIR=/opt/testgrid/workspace
+INFRA_JSON='infra.json'
 
 WORKING_DIR=$(pwd)
 PRODUCT_REPOSITORY=$1
