@@ -31,6 +31,7 @@ TEST_GROUP=$8
 PRODUCT_REPOSITORY_NAME=$(echo $PRODUCT_REPOSITORY | rev | cut -d'/' -f1 | rev | cut -d'.' -f1)
 PRODUCT_REPOSITORY_PACK_DIR="$TESTGRID_DIR/$PRODUCT_REPOSITORY_NAME/modules/distribution/product/target"
 INT_TEST_MODULE_DIR="$TESTGRID_DIR/$PRODUCT_REPOSITORY_NAME/modules/integration"
+INTG_TEST_PATH="$TESTGRID_DIR/$PRODUCT_REPOSITORY_NAME/modules/integration/tests-integration/tests-backend/../../../distribution/target/"
 
 # CloudFormation properties
 CFN_PROP_FILE="${TESTGRID_DIR}/cfn-props.properties"
@@ -116,7 +117,7 @@ log_info "Copying product pack to Repository"
 [ -f $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION*.zip ] && rm -f $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION*.zip
 cd $TESTGRID_DIR && zip -qr $PRODUCT_PACK_NAME.zip $PRODUCT_PACK_NAME
 echo "Copying pack to target"
-cp $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_PACK_NAME.zip
+cp $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $INTG_TEST_PATH
 mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR/.
 
 log_info "install pack into local maven Repository"
