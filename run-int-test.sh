@@ -29,9 +29,8 @@ GIT_PASS=$6
 TEST_MODE=$7
 TEST_GROUP=$8
 PRODUCT_REPOSITORY_NAME=$(echo $PRODUCT_REPOSITORY | rev | cut -d'/' -f1 | rev | cut -d'.' -f1)
-PRODUCT_REPOSITORY_PACK_DIR="$TESTGRID_DIR/$PRODUCT_REPOSITORY_NAME/modules/distribution/product/target"
+PRODUCT_REPOSITORY_PACK_DIR="$TESTGRID_DIR/$PRODUCT_REPOSITORY_NAME/modules/distribution/target"
 INT_TEST_MODULE_DIR="$TESTGRID_DIR/$PRODUCT_REPOSITORY_NAME/modules/integration"
-INTG_TEST_PATH="$TESTGRID_DIR/$PRODUCT_REPOSITORY_NAME/modules/integration/tests-integration/tests-backend/../../../distribution/target/"
 
 # CloudFormation properties
 CFN_PROP_FILE="${TESTGRID_DIR}/cfn-props.properties"
