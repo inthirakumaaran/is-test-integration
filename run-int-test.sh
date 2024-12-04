@@ -116,10 +116,22 @@ log_info "Copying product pack to Repository"
 [ -f $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION*.zip ] && rm -f $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION*.zip
 cd $TESTGRID_DIR && zip -qr $PRODUCT_PACK_NAME.zip $PRODUCT_PACK_NAME
 echo "Copying pack to target"
-cp $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR
 mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR/.
 
 log_info "install pack into local maven Repository"
 mvn install:install-file -Dfile=$PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_PACK_NAME.zip -DgroupId=org.wso2.is -DartifactId=is -Dversion=$PRODUCT_VERSION -Dpackaging=zip --file=$PRODUCT_REPOSITORY_PACK_DIR/../pom.xml
-cd $INT_TEST_MODULE_DIR  && mvn clean install -fae -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
+log_info "Navigating to integration test module directory"
+cd $INT_TEST_MODULE_DIR
+
+log_info "Running Maven clean install"
+mvn clean install -fae -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+
+log_info "Checking for server startup script"
+if [ ! -f "$INT_TEST_MODULE_DIR/target/carbontmp1733296428456/wso2is-7.1.0-m6-SNAPSHOT/bin/wso2server.sh" ]; then
+    log_error "Server startup script not found at $INT_TEST_MODULE_DIR/target/carbontmp1733296428456/wso2is-7.1.0-m6-SNAPSHOT/bin"
+    exit 1
+fi
+
+log_info "Server startup script found, proceeding with startup"
+# Add the command to start the server here
