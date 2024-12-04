@@ -115,9 +115,9 @@ mkdir -p $PRODUCT_REPOSITORY_PACK_DIR
 log_info "Copying product pack to Repository"
 [ -f $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION*.zip ] && rm -f $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION*.zip
 cd $TESTGRID_DIR && zip -qr $PRODUCT_PACK_NAME.zip $PRODUCT_PACK_NAME
-mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR/.
 echo "Copying pack to target"
 cp $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_PACK_NAME.zip
+mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR/.
 
 log_info "install pack into local maven Repository"
 mvn install:install-file -Dfile=$PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_PACK_NAME.zip -DgroupId=org.wso2.is -DartifactId=is -Dversion=$PRODUCT_VERSION -Dpackaging=zip
