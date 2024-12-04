@@ -119,7 +119,6 @@ echo "Copying pack to target"
 mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR/.
 
 log_info "install pack into local maven Repository"
-#mvn install:install-file -Dfile=$PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_PACK_NAME.zip -DgroupId=org.wso2.is -DartifactId=is -Dversion=$PRODUCT_VERSION -Dpackaging=zip --file=$PRODUCT_REPOSITORY_PACK_DIR/../pom.xml
 
 log_info "Navigating to integration test module directory"
 cd $INT_TEST_MODULE_DIR
