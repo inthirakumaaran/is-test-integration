@@ -124,7 +124,7 @@ log_info "Navigating to integration test module directory"
 cd $INT_TEST_MODULE_DIR
 
 log_info "Running Maven clean install"
-mvn clean install -fae -B -Dcarbon.home=$PRODUCT_REPOSITORY_PACK_DIR/target -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+mvn clean install -fae -B -Dcarbon.home=$PRODUCT_REPOSITORY_PACK_DIR -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
 
 # Add the command to start the server here
