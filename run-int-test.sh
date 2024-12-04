@@ -116,12 +116,14 @@ log_info "Copying product pack to Repository"
 [ -f $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION*.zip ] && rm -f $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION*.zip
 cd $TESTGRID_DIR && zip -qr $PRODUCT_PACK_NAME.zip $PRODUCT_PACK_NAME
 echo "Copying pack to target"
+cp -r $TESTGRID_DIR/$PRODUCT_PACK_NAME $PRODUCT_REPOSITORY_PACK_DIR
 mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR
 
 log_info "install pack into local maven Repository"
 
 log_info "Navigating to integration test module directory"
 cd $INT_TEST_MODULE_DIR
+ls /opt/testgrid/workspace/product-is/modules/integration/tests-integration/tests-backend/../../../distribution/target/
 
 log_info "Running Maven clean install"
 mvn clean install -fae -B -Dcarbon.home=$PRODUCT_REPOSITORY_PACK_DIR -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
