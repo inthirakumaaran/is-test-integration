@@ -108,15 +108,15 @@ sed -i "s|DB_PASSWORD|${CF_DB_PASSWORD}|g" ${INFRA_JSON}
 sed -i "s|DB_NAME|${DB_NAME}|g" ${INFRA_JSON}
 
 export_db_params ${DB_TYPE}
-# delete if the folder is available
-rm -rf $$PRODUCT_REPOSITORY_PACK_DIR
+# # delete if the folder is available
+# rm -rf $$PRODUCT_REPOSITORY_PACK_DIR
 
-mkdir -p $PRODUCT_REPOSITORY_PACK_DIR
+# mkdir -p $PRODUCT_REPOSITORY_PACK_DIR
 log_info "Copying product pack to Repository"
 [ -f $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION*.zip ] && rm -f $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION*.zip
 cd $TESTGRID_DIR && zip -qr $PRODUCT_PACK_NAME.zip $PRODUCT_PACK_NAME
 echo "Copying pack to target"
-mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR/.
+mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR
 
 log_info "install pack into local maven Repository"
 
@@ -126,18 +126,5 @@ cd $INT_TEST_MODULE_DIR
 log_info "Running Maven clean install"
 mvn clean install -fae -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
-log_info "Finding carbontmp directory"
-CARBON_TMP_DIR=$(find target -type d -name 'carbontmp*')
 
-if [ -z "$CARBON_TMP_DIR" ]; then
-    log_error "carbontmp directory not found"
-    exit 1
-fi
-
-log_info "Moving product pack to $CARBON_TMP_DIR"
-mv $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_PACK_NAME.zip $CARBON_TMP_DIR/
-
-log_info "Product pack moved successfully"
-
-log_info "Server startup script found, proceeding with startup"
 # Add the command to start the server here
