@@ -127,11 +127,18 @@ cd $INT_TEST_MODULE_DIR
 log_info "Running Maven clean install"
 mvn clean install -fae -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
-log_info "Checking for server startup script"
-if [ ! -f "$INT_TEST_MODULE_DIR/target/carbontmp1733296428456/wso2is-7.1.0-m6-SNAPSHOT/bin/wso2server.sh" ]; then
-    log_error "Server startup script not found at $INT_TEST_MODULE_DIR/target/carbontmp1733296428456/wso2is-7.1.0-m6-SNAPSHOT/bin"
+log_info "Finding carbontmp directory"
+CARBON_TMP_DIR=$(find target -type d -name 'carbontmp*')
+
+if [ -z "$CARBON_TMP_DIR" ]; then
+    log_error "carbontmp directory not found"
     exit 1
 fi
+
+log_info "Moving product pack to $CARBON_TMP_DIR"
+mv $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_PACK_NAME.zip $CARBON_TMP_DIR/
+
+log_info "Product pack moved successfully"
 
 log_info "Server startup script found, proceeding with startup"
 # Add the command to start the server here
