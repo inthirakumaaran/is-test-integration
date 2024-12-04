@@ -117,7 +117,7 @@ log_info "Copying product pack to Repository"
 cd $TESTGRID_DIR && zip -qr $PRODUCT_PACK_NAME.zip $PRODUCT_PACK_NAME
 echo "Copying pack to target"
 cp -r $TESTGRID_DIR/$PRODUCT_PACK_NAME $PRODUCT_REPOSITORY_PACK_DIR
-mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR
+mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR.zip
 
 log_info "install pack into local maven Repository"
 
