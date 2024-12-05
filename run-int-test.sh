@@ -116,6 +116,8 @@ mkdir -p $PRODUCT_REPOSITORY_PACK_DIR
 log_info "Copying product pack to Repository"
 cd $TESTGRID_DIR && wget -q $PRODUCT_PACK_LOCATION
 ls $TESTGRID_DIR
+sudo find / -name "$PRODUCT_PACK_NAME.zip" 2>/dev/null
+
 echo "Copying pack to target"
 mv $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION-.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip
 ls $PRODUCT_REPOSITORY_PACK_DIR
