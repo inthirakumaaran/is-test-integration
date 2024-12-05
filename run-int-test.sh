@@ -44,6 +44,7 @@ CF_DB_USERNAME=$(grep -w "CF_DB_USERNAME" ${CFN_PROP_FILE} | cut -d"=" -f2)
 CF_DB_HOST=$(grep -w "CF_DB_HOST" ${CFN_PROP_FILE} | cut -d"=" -f2)
 CF_DB_PORT=$(grep -w "CF_DB_PORT" ${CFN_PROP_FILE} | cut -d"=" -f2)
 CF_DB_NAME=$(grep -w "SID" ${CFN_PROP_FILE} | cut -d"=" -f2)
+PRODUCT_PACK_LOCATION=$(grep -w "PRODUCT_PACK_LOCATION" ${CFN_PROP_FILE} | cut -d"=" -f2)
 
 function log_info(){
     echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')]: $1"
@@ -108,19 +109,14 @@ sed -i "s|DB_PASSWORD|${CF_DB_PASSWORD}|g" ${INFRA_JSON}
 sed -i "s|DB_NAME|${DB_NAME}|g" ${INFRA_JSON}
 
 export_db_params ${DB_TYPE}
-ls $TESTGRID_DIR
-ls $TESTGRID_DIR/$PRODUCT_PACK_NAME
 
-unzip $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip -d $TESTGRID_DIR/new
-
-ls $TESTGRID_DIR/new
 # delete if the folder is available
 rm -rf $$PRODUCT_REPOSITORY_PACK_DIR
 mkdir -p $PRODUCT_REPOSITORY_PACK_DIR
 log_info "Copying product pack to Repository"
-ls $TESTGRID_DIR/$PRODUCT_PACK_NAME
+cd $TESTGRID_DIR && wget -q $PRODUCT_PACK_LOCATION
+ls $TESTGRID_DIR
 echo "Copying pack to target"
-cp -r $TESTGRID_DIR/$PRODUCT_PACK_NAME $PRODUCT_REPOSITORY_PACK_DIR
 mv $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION-.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip
 ls $PRODUCT_REPOSITORY_PACK_DIR
 log_info "install pack into local maven Repository"
