@@ -114,6 +114,8 @@ export_db_params ${DB_TYPE}
 rm -rf $$PRODUCT_REPOSITORY_PACK_DIR
 mkdir -p $PRODUCT_REPOSITORY_PACK_DIR
 log_info "Copying product pack to Repository"
+ls $TESTGRID_DIR
+ls $TESTGRID_DIR/$PRODUCT_PACK_NAME
 cd $TESTGRID_DIR && wget -q $PRODUCT_PACK_LOCATION
 ls $TESTGRID_DIR
 sudo find / -name "$PRODUCT_PACK_NAME.zip" 2>/dev/null
