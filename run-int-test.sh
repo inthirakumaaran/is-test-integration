@@ -94,11 +94,13 @@ fi
 
 log_info "Exporting JDK"
 install_jdk ${JDK_TYPE}
-if [ -n "$TEST_GROUP" ];
-then
-    log_info "Executing product test for ${TEST_GROUP}"
-    export PRODUCT_APIM_TEST_GROUPS=${TEST_GROUP}
-fi
+
+mv $TESTGRID_DIR/$PRODUCT_PACK_NAME $TESTGRID_DIR/new/$PRODUCT_PACK_NAME
+pwd
+cd $TESTGRID_DIR && wget -q https://integration-testgrid-resources.s3.us-east-1.amazonaws.com/iam-release-packs/$PRODUCT_PACK_NAME.zip
+unzip -q $PRODUCT_PACK_NAME.zip -d $TESTGRID_DIR
+ls $TESTGRID_DIR/$PRODUCT_PACK_NAME
+rm $PRODUCT_PACK_NAME.zip
 
 db_file=$(jq -r '.jdbc[] | select ( .name == '\"${DB_TYPE}\"') | .file_name' ${INFRA_JSON})
 wget -q https://integration-testgrid-resources.s3.amazonaws.com/lib/jdbc/${db_file}.jar  -P $TESTGRID_DIR/${PRODUCT_PACK_NAME}/repository/components/lib
@@ -116,9 +118,8 @@ mkdir -p $PRODUCT_REPOSITORY_PACK_DIR
 log_info "Copying product pack to Repository"
 ls $TESTGRID_DIR
 ls $TESTGRID_DIR/$PRODUCT_PACK_NAME
-cd $TESTGRID_DIR && wget -q $PRODUCT_PACK_LOCATION
 ls $TESTGRID_DIR
-sudo find / -name "$PRODUCT_PACK_NAME.zip" 2>/dev/null
+zip -r $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION-.zip $TESTGRID_DIR/$PRODUCT_PACK_NAME
 
 echo "Copying pack to target"
 mv $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION-.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip
