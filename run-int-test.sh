@@ -94,8 +94,7 @@ fi
 
 log_info "Exporting JDK"
 install_jdk ${JDK_TYPE}
-ls $TESTGRID_DIR/$PRODUCT_PACK_NAME
-ls $TESTGRID_DIR/$PRODUCT_PACK_NAME/repository
+
 # mv $TESTGRID_DIR/$PRODUCT_PACK_NAME $TESTGRID_DIR/new/$PRODUCT_PACK_NAME
 pwd
 cd $TESTGRID_DIR && wget -q https://integration-testgrid-resources.s3.us-east-1.amazonaws.com/iam-release-packs/$PRODUCT_PACK_NAME.zip
@@ -117,13 +116,10 @@ export_db_params ${DB_TYPE}
 rm -rf $$PRODUCT_REPOSITORY_PACK_DIR
 mkdir -p $PRODUCT_REPOSITORY_PACK_DIR
 log_info "Copying product pack to Repository"
-ls $TESTGRID_DIR
-ls $TESTGRID_DIR/$PRODUCT_PACK_NAME
-ls $TESTGRID_DIR
 zip -r $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION-.zip $TESTGRID_DIR/$PRODUCT_PACK_NAME
 
 echo "Copying pack to target"
-mv $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION-.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip
+mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_PACK_NAME.zip
 ls $PRODUCT_REPOSITORY_PACK_DIR
 log_info "install pack into local maven Repository"
 
