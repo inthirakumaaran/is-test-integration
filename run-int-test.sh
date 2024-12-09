@@ -113,10 +113,10 @@ sed -i "s|DB_NAME|${DB_NAME}|g" ${INFRA_JSON}
 export_db_params ${DB_TYPE}
 
 # delete if the folder is available
-rm -rf $$PRODUCT_REPOSITORY_PACK_DIR
+rm -rf $PRODUCT_REPOSITORY_PACK_DIR
 mkdir -p $PRODUCT_REPOSITORY_PACK_DIR
 log_info "Copying product pack to Repository"
-zip -q -r $TESTGRID_DIR/$$PRODUCT_PACK_NAME.zip $TESTGRID_DIR/$PRODUCT_PACK_NAME
+zip -q -r $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $TESTGRID_DIR/$PRODUCT_PACK_NAME
 
 echo "Copying pack to target"
 mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_PACK_NAME.zip
