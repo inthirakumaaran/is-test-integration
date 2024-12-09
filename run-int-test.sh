@@ -94,7 +94,8 @@ fi
 
 log_info "Exporting JDK"
 install_jdk ${JDK_TYPE}
-
+ls $TESTGRID_DIR/$PRODUCT_PACK_NAME
+ls $TESTGRID_DIR/$PRODUCT_PACK_NAME/repository
 # mv $TESTGRID_DIR/$PRODUCT_PACK_NAME $TESTGRID_DIR/new/$PRODUCT_PACK_NAME
 pwd
 cd $TESTGRID_DIR && wget -q https://integration-testgrid-resources.s3.us-east-1.amazonaws.com/iam-release-packs/$PRODUCT_PACK_NAME.zip
