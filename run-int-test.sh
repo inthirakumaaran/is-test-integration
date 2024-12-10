@@ -98,8 +98,7 @@ install_jdk ${JDK_TYPE}
 # mv $TESTGRID_DIR/$PRODUCT_PACK_NAME $TESTGRID_DIR/new/$PRODUCT_PACK_NAME
 pwd
 
-ls $TESTGRID_DIR/$PRODUCT_PACK_NAME
-rm $PRODUCT_PACK_NAME.zip
+# rm $PRODUCT_PACK_NAME.zip
 
 db_file=$(jq -r '.jdbc[] | select ( .name == '\"${DB_TYPE}\"') | .file_name' ${INFRA_JSON})
 wget -q https://integration-testgrid-resources.s3.amazonaws.com/lib/jdbc/${db_file}.jar  -P $TESTGRID_DIR/${PRODUCT_PACK_NAME}/repository/components/lib
