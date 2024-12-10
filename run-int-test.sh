@@ -97,7 +97,7 @@ install_jdk ${JDK_TYPE}
 
 # mv $TESTGRID_DIR/$PRODUCT_PACK_NAME $TESTGRID_DIR/new/$PRODUCT_PACK_NAME
 pwd
-cd $TESTGRID_DIR && wget -q https://integration-testgrid-resources.s3.amazonaws.com/iam-release-packs/$PRODUCT_PACK_NAME.zip
+cd $TESTGRID_DIR && wget -q $PRODUCT_PACK_LOCATION
 if [ -d "$PRODUCT_PACK_NAME" ]; then
     rm -f "$PRODUCT_PACK_NAME"
     
