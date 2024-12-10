@@ -98,10 +98,12 @@ install_jdk ${JDK_TYPE}
 # mv $TESTGRID_DIR/$PRODUCT_PACK_NAME $TESTGRID_DIR/new/$PRODUCT_PACK_NAME
 pwd
 cd $TESTGRID_DIR && wget -q https://integration-testgrid-resources.s3.amazonaws.com/iam-release-packs/$PRODUCT_PACK_NAME.zip
-if [ -f "$PRODUCT_PACK_NAME.zip" ]; then
+if [ -d "$PRODUCT_PACK_NAME" ]; then
     rm -f "$PRODUCT_PACK_NAME"
-    unzip -q "$PRODUCT_PACK_NAME.zip"
+    
 fi
+unzip -q "$PRODUCT_PACK_NAME.zip" -d $TESTGRID_DIR/
+rm -f "$PRODUCT_PACK_NAME.zip"
 
 db_file=$(jq -r '.jdbc[] | select ( .name == '\"${DB_TYPE}\"') | .file_name' ${INFRA_JSON})
 wget -q https://integration-testgrid-resources.s3.amazonaws.com/lib/jdbc/${db_file}.jar  -P $TESTGRID_DIR/${PRODUCT_PACK_NAME}/repository/components/lib
