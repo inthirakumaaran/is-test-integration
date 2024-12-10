@@ -97,7 +97,6 @@ install_jdk ${JDK_TYPE}
 
 # mv $TESTGRID_DIR/$PRODUCT_PACK_NAME $TESTGRID_DIR/new/$PRODUCT_PACK_NAME
 pwd
-
 # rm $PRODUCT_PACK_NAME.zip
 
 db_file=$(jq -r '.jdbc[] | select ( .name == '\"${DB_TYPE}\"') | .file_name' ${INFRA_JSON})
@@ -110,14 +109,25 @@ sed -i "s|DB_NAME|${DB_NAME}|g" ${INFRA_JSON}
 
 export_db_params ${DB_TYPE}
 
+# Check if PRODUCT_VERSION contains "SNAPSHOT"
+if [[ "$PRODUCT_VERSION" != *"SNAPSHOT"* ]]; then
+  # Extract the prefix and the numeric part of the version
+  VERSION_PREFIX=$(echo $PRODUCT_VERSION | grep -o -E '^[0-9]+\.[0-9]+\.[0-9]+-m')
+  VERSION_NUMBER=$(echo $PRODUCT_VERSION | grep -o -E '[0-9]+$')
+  # Increment the version number
+  NEW_VERSION_NUMBER=$((VERSION_NUMBER + 1))
+  # Form the new version with "SNAPSHOT"
+  PRODUCT_VERSION="${VERSION_PREFIX}${NEW_VERSION_NUMBER}-SNAPSHOT"
+fi
+
 # delete if the folder is available
 rm -rf $PRODUCT_REPOSITORY_PACK_DIR
 mkdir -p $PRODUCT_REPOSITORY_PACK_DIR
 log_info "Copying product pack to Repository"
-zip -q -r $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $TESTGRID_DIR/$PRODUCT_PACK_NAME
+zip -q -r $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip $TESTGRID_DIR/$PRODUCT_PACK_NAME
 
 echo "Copying pack to target"
-mv $TESTGRID_DIR/$PRODUCT_PACK_NAME.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_PACK_NAME.zip
+mv $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip
 ls $PRODUCT_REPOSITORY_PACK_DIR
 log_info "install pack into local maven Repository"
 
