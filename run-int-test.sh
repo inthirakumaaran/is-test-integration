@@ -99,7 +99,7 @@ install_jdk ${JDK_TYPE}
 pwd
 cd $TESTGRID_DIR && wget -q $PRODUCT_PACK_LOCATION
 if [ -d "$PRODUCT_PACK_NAME" ]; then
-    rm -f "$PRODUCT_PACK_NAME"
+    rm -rf "$PRODUCT_PACK_NAME"
     
 fi
 unzip -q "$PRODUCT_PACK_NAME.zip" -d $TESTGRID_DIR/
