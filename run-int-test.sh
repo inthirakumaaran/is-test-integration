@@ -150,6 +150,6 @@ cd $INT_TEST_MODULE_DIR
 ls /opt/testgrid/workspace/product-is/modules/integration/tests-integration/tests-backend/../../../distribution/target/
 
 log_info "Running Maven clean install"
-mvn clean install -fae -B -Dcarbon.home=$PRODUCT_REPOSITORY_PACK_DIR -Ptestgrid -DskipBenchMarkTest=true -Dhttp.keepAlive=false
+mvn clean install -fae -B -Dcarbon.home=$PRODUCT_REPOSITORY_PACK_DIR  -Ptestgrid -DskipBenchMarkTest=true -Dhttp.keepAlive=false -DforkMode=never test
 
 # Add the command to start the server here
