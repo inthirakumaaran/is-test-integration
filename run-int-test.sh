@@ -95,15 +95,17 @@ fi
 log_info "Exporting JDK"
 install_jdk ${JDK_TYPE}
 
-# mv $TESTGRID_DIR/$PRODUCT_PACK_NAME $TESTGRID_DIR/new/$PRODUCT_PACK_NAME
 pwd
-cd $TESTGRID_DIR
-wget -q $PRODUCT_PACK_LOCATION
-if [ -d "$PRODUCT_PACK_NAME" ]; then
-    rm -rf "$PRODUCT_PACK_NAME"
-    
+# Check if PRODUCT_VERSION contains "SNAPSHOT"
+if [[ "$PRODUCT_VERSION" == *"SNAPSHOT"* ]]; then
+    cd $TESTGRID_DIR
+    wget -q https://integration-testgrid-resources.s3.amazonaws.com/iam-release/$PRODUCT_PACK_NAME.zip
+    if [ -d "$PRODUCT_PACK_NAME" ]; then
+        rm -rf "$PRODUCT_PACK_NAME"
+        
+    fi
+    unzip -q "$PRODUCT_PACK_NAME.zip" -d $TESTGRID_DIR
 fi
-unzip -q "$PRODUCT_PACK_NAME.zip" -d $TESTGRID_DIR
 
 db_file=$(jq -r '.jdbc[] | select ( .name == '\"${DB_TYPE}\"') | .file_name' ${INFRA_JSON})
 wget -q https://integration-testgrid-resources.s3.amazonaws.com/lib/jdbc/${db_file}.jar  -P $TESTGRID_DIR/${PRODUCT_PACK_NAME}/repository/components/lib
@@ -140,6 +142,7 @@ echo "Copying pack to target"
 mv $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip
 ls $PRODUCT_REPOSITORY_PACK_DIR
 log_info "install pack into local maven Repository"
+mvn install:install-file -Dfile=$PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip
 
 log_info "Navigating to integration test module directory"
 ls $INT_TEST_MODULE_DIR
@@ -147,7 +150,6 @@ cd $INT_TEST_MODULE_DIR
 ls /opt/testgrid/workspace/product-is/modules/integration/tests-integration/tests-backend/../../../distribution/target/
 
 log_info "Running Maven clean install"
-mvn clean install -fae -B -Dcarbon.home=$PRODUCT_REPOSITORY_PACK_DIR -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-
+mvn clean install -fae -B -Dcarbon.home=$PRODUCT_REPOSITORY_PACK_DIR -Ptestgrid -DskipBenchMarkTest=true -Dhttp.keepAlive=false
 
 # Add the command to start the server here
