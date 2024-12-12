@@ -30,7 +30,7 @@ TEST_MODE=$7
 TEST_GROUP=$8
 PRODUCT_REPOSITORY_NAME=$(echo $PRODUCT_REPOSITORY | rev | cut -d'/' -f1 | rev | cut -d'.' -f1)
 PRODUCT_REPOSITORY_PACK_DIR="$TESTGRID_DIR/$PRODUCT_REPOSITORY_NAME/modules/distribution/target"
-INT_TEST_MODULE_DIR="$TESTGRID_DIR/$PRODUCT_REPOSITORY_NAME/modules/integration"
+INT_TEST_MODULE_DIR="$TESTGRID_DIR/$PRODUCT_REPOSITORY_NAME/modules/integration/tests-integration"
 
 # CloudFormation properties
 CFN_PROP_FILE="${TESTGRID_DIR}/cfn-props.properties"
@@ -99,7 +99,7 @@ pwd
 # Check if PRODUCT_VERSION contains "SNAPSHOT"
 if [[ "$PRODUCT_VERSION" == *"SNAPSHOT"* ]]; then
     cd $TESTGRID_DIR
-    wget -q https://integration-testgrid-resources.s3.amazonaws.com/iam-release/$PRODUCT_PACK_NAME.zip
+    wget -q  https://integration-testgrid-resources.s3.us-east-1.amazonaws.com/iam-release-packs/$PRODUCT_PACK_NAME.zip
     if [ -d "$PRODUCT_PACK_NAME" ]; then
         rm -rf "$PRODUCT_PACK_NAME"
         
@@ -150,5 +150,5 @@ cd $INT_TEST_MODULE_DIR
 ls /opt/testgrid/workspace/product-is/modules/integration/tests-integration/tests-backend/../../../distribution/target/
 
 log_info "Running Maven clean install"
-mvn clean install  
+mvn clean install
 # Add the command to start the server here
