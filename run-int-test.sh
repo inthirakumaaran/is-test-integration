@@ -89,7 +89,7 @@ source /etc/environment
 log_info "Clone Product repository"
 if [ ! -d $PRODUCT_REPOSITORY_NAME ];
 then
-    git clone https://${GIT_USER}:${GIT_PASS}@$PRODUCT_REPOSITORY --branch $PRODUCT_REPOSITORY_BRANCH --single-branch
+    git clone https://github.com/Miranlfk/product-is.git --branch $PRODUCT_REPOSITORY_BRANCH --single-branch
 fi
 
 log_info "Exporting JDK"
