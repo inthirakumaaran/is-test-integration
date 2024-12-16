@@ -89,7 +89,7 @@ source /etc/environment
 log_info "Clone Product repository"
 if [ ! -d $PRODUCT_REPOSITORY_NAME ];
 then
-    git clone https://github.com/Miranlfk/product-is.git --branch $PRODUCT_REPOSITORY_BRANCH --single-branch
+    git clone https://${GIT_USER}:${GIT_PASS}@$PRODUCT_REPOSITORY --branch $PRODUCT_REPOSITORY_BRANCH --single-branch
 fi
 
 log_info "Exporting JDK"
@@ -97,15 +97,15 @@ install_jdk ${JDK_TYPE}
 
 pwd
 # Check if PRODUCT_VERSION contains "SNAPSHOT"
-if [[ "$PRODUCT_VERSION" == *"SNAPSHOT"* ]]; then
-    cd $TESTGRID_DIR
-    wget -q  https://integration-testgrid-resources.s3.us-east-1.amazonaws.com/iam-release-packs/$PRODUCT_PACK_NAME.zip
-    if [ -d "$PRODUCT_PACK_NAME" ]; then
-        rm -rf "$PRODUCT_PACK_NAME"
+# if [[ "$PRODUCT_VERSION" == *"SNAPSHOT"* ]]; then
+#     cd $TESTGRID_DIR
+#     wget -q  https://integration-testgrid-resources.s3.us-east-1.amazonaws.com/iam-release-packs/$PRODUCT_PACK_NAME.zip
+#     if [ -d "$PRODUCT_PACK_NAME" ]; then
+#         rm -rf "$PRODUCT_PACK_NAME"
         
-    fi
-    unzip -q "$PRODUCT_PACK_NAME.zip" -d $TESTGRID_DIR
-fi
+#     fi
+#     unzip -q "$PRODUCT_PACK_NAME.zip" -d $TESTGRID_DIR
+# fi
 
 db_file=$(jq -r '.jdbc[] | select ( .name == '\"${DB_TYPE}\"') | .file_name' ${INFRA_JSON})
 wget -q https://integration-testgrid-resources.s3.amazonaws.com/lib/jdbc/${db_file}.jar  -P $TESTGRID_DIR/${PRODUCT_PACK_NAME}/repository/components/lib
