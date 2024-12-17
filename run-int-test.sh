@@ -118,18 +118,18 @@ sed -i "s|DB_NAME|${DB_NAME}|g" ${INFRA_JSON}
 export_db_params ${DB_TYPE}
 
 # Check if PRODUCT_VERSION contains "SNAPSHOT"
-if [[ "$PRODUCT_VERSION" != *"SNAPSHOT"* ]]; then
-  # Extract the prefix and the numeric part of the version
-  VERSION_PREFIX=$(echo $PRODUCT_VERSION | grep -o -E '^[0-9]+\.[0-9]+\.[0-9]+-m')
-  VERSION_NUMBER=$(echo $PRODUCT_VERSION | grep -o -E '[0-9]+$')
-  # Increment the version number
-  NEW_VERSION_NUMBER=$((VERSION_NUMBER + 1))
-  # Form the new version with "SNAPSHOT"
-  PRODUCT_VERSION="${VERSION_PREFIX}${NEW_VERSION_NUMBER}-SNAPSHOT"
-  cd $TESTGRID_DIR
-  mkdir $PRODUCT_NAME-$PRODUCT_VERSION
-  cp -r $TESTGRID_DIR/$PRODUCT_PACK_NAME/* $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION
-fi
+# if [[ "$PRODUCT_VERSION" != *"SNAPSHOT"* ]]; then
+#   # Extract the prefix and the numeric part of the version
+#   VERSION_PREFIX=$(echo $PRODUCT_VERSION | grep -o -E '^[0-9]+\.[0-9]+\.[0-9]+-m')
+#   VERSION_NUMBER=$(echo $PRODUCT_VERSION | grep -o -E '[0-9]+$')
+#   # Increment the version number
+#   NEW_VERSION_NUMBER=$((VERSION_NUMBER + 1))
+#   # Form the new version with "SNAPSHOT"
+#   PRODUCT_VERSION="${VERSION_PREFIX}${NEW_VERSION_NUMBER}-SNAPSHOT"
+#   cd $TESTGRID_DIR
+#   mkdir $PRODUCT_NAME-$PRODUCT_VERSION
+#   cp -r $TESTGRID_DIR/$PRODUCT_PACK_NAME/* $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION
+# fi
 
 # delete if the folder is available
 rm -rf $PRODUCT_REPOSITORY_PACK_DIR
