@@ -96,16 +96,6 @@ log_info "Exporting JDK"
 install_jdk ${JDK_TYPE}
 
 pwd
-# Check if PRODUCT_VERSION contains "SNAPSHOT"
-# if [[ "$PRODUCT_VERSION" == *"SNAPSHOT"* ]]; then
-#     cd $TESTGRID_DIR
-#     wget -q  https://integration-testgrid-resources.s3.us-east-1.amazonaws.com/iam-release-packs/$PRODUCT_PACK_NAME.zip
-#     if [ -d "$PRODUCT_PACK_NAME" ]; then
-#         rm -rf "$PRODUCT_PACK_NAME"
-        
-#     fi
-#     unzip -q "$PRODUCT_PACK_NAME.zip" -d $TESTGRID_DIR
-# fi
 
 db_file=$(jq -r '.jdbc[] | select ( .name == '\"${DB_TYPE}\"') | .file_name' ${INFRA_JSON})
 wget -q https://integration-testgrid-resources.s3.amazonaws.com/lib/jdbc/${db_file}.jar  -P $TESTGRID_DIR/${PRODUCT_PACK_NAME}/repository/components/lib
@@ -116,20 +106,6 @@ sed -i "s|DB_PASSWORD|${CF_DB_PASSWORD}|g" ${INFRA_JSON}
 sed -i "s|DB_NAME|${DB_NAME}|g" ${INFRA_JSON}
 
 export_db_params ${DB_TYPE}
-
-# Check if PRODUCT_VERSION contains "SNAPSHOT"
-# if [[ "$PRODUCT_VERSION" != *"SNAPSHOT"* ]]; then
-#   # Extract the prefix and the numeric part of the version
-#   VERSION_PREFIX=$(echo $PRODUCT_VERSION | grep -o -E '^[0-9]+\.[0-9]+\.[0-9]+-m')
-#   VERSION_NUMBER=$(echo $PRODUCT_VERSION | grep -o -E '[0-9]+$')
-#   # Increment the version number
-#   NEW_VERSION_NUMBER=$((VERSION_NUMBER + 1))
-#   # Form the new version with "SNAPSHOT"
-#   PRODUCT_VERSION="${VERSION_PREFIX}${NEW_VERSION_NUMBER}-SNAPSHOT"
-#   cd $TESTGRID_DIR
-#   mkdir $PRODUCT_NAME-$PRODUCT_VERSION
-#   cp -r $TESTGRID_DIR/$PRODUCT_PACK_NAME/* $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION
-# fi
 
 # delete if the folder is available
 rm -rf $PRODUCT_REPOSITORY_PACK_DIR
@@ -150,5 +126,4 @@ cd $INT_TEST_MODULE_DIR
 ls /opt/testgrid/workspace/product-is/modules/integration/tests-integration/tests-backend/../../../distribution/target/
 
 log_info "Running Maven clean install"
-mvn clean install
-# Add the command to start the server here
+mvn clean install 
