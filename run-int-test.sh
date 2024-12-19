@@ -114,16 +114,27 @@ log_info "Copying product pack to Repository"
 ls $TESTGRID_DIR/$PRODUCT_PACK_NAME
 zip -q -r $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip $PRODUCT_NAME-$PRODUCT_VERSION
 
-echo "Copying pack to target"
-mv $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip
-ls $PRODUCT_REPOSITORY_PACK_DIR
-log_info "install pack into local maven Repository"
-mvn install:install-file -Dfile=$PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip -DgroupId=org.wso2.is -DartifactId=wso2is -Dversion=$PRODUCT_VERSION -Dpackaging=zip
-
 log_info "Navigating to integration test module directory"
 ls $INT_TEST_MODULE_DIR
-cd $INT_TEST_MODULE_DIR
-ls /opt/testgrid/workspace/product-is/modules/integration/tests-integration/tests-backend/../../../distribution/target/
 
-log_info "Running Maven clean install"
-mvn clean install 
+# Check if PRODUCT_VERSION doesn't contains "SNAPSHOT"
+if [[ "$PRODUCT_VERSION" != *"SNAPSHOT"* ]]; then
+    cd $TESTGRID_DIR/$PRODUCT_REPOSITORY_NAME
+    log_info "Running Maven clean install"
+    mvn clean install
+else 
+    echo "Copying pack to target"
+    mv $TESTGRID_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip $PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip
+    ls $PRODUCT_REPOSITORY_PACK_DIR
+    log_info "install pack into local maven Repository"
+    mvn install:install-file -Dfile=$PRODUCT_REPOSITORY_PACK_DIR/$PRODUCT_NAME-$PRODUCT_VERSION.zip -DgroupId=org.wso2.is -DartifactId=wso2is -Dversion=$PRODUCT_VERSION -Dpackaging=zip
+    cd $INT_TEST_MODULE_DIR
+    log_info "Running Maven clean install"
+    mvn clean install
+    
+fi
+
+
+
+
+ 
