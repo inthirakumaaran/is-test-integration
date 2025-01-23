@@ -52,7 +52,6 @@ function log_info(){
 
 function log_error(){
     echo "[ERROR][$(date '+%Y-%m-%d %H:%M:%S')]: $1"
-    exit 1
 }
 
 function install_jdk(){
@@ -147,8 +146,3 @@ else
     log_info "Running Maven clean install"
     mvn clean install
 fi
-
-
-
-
- 
