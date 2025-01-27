@@ -144,5 +144,5 @@ else
     ls $PRODUCT_REPOSITORY_PACK_DIR
     cd $INT_TEST_MODULE_DIR
     log_info "Running Maven clean install"
-    mvn clean install
+    mvn clean install -Denv.MAVEN_OPTS="-Xmx8192m -XX:MaxPermSize=4096m -XX:ReservedCodeCacheSize=786m"
 fi
